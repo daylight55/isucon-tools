@@ -7,7 +7,7 @@ ISUCON_1_HOST=${1:-isu11-2}
 
 for remote in ${ISUCON_1_HOST}; do
   echo "Deploying to ${remote}"
-  # ssh ${remote} 'sh' < ./func/install.sh
-  # ./func/send.sh ${remote}
-  # ssh ${remote} 'sh' < ./func/github.sh
+  ssh ${remote} 'sh' < ./func/install.sh
+  ./func/send.sh ${remote}
+  ssh ${remote} 'sh' < ./func/github.sh
 done
