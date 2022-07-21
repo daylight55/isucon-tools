@@ -1,4 +1,6 @@
 #!/bin/bash
+set -xe
+
 mkdir tools && cd tools
 
 ###############
