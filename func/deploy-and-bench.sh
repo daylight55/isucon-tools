@@ -3,6 +3,8 @@
 set -e
 
 TARGET_IP=$1
+APP_NAME=$2
+APP_DIR=$3
 
 main(){
     cd ${HOME}/webapp
@@ -36,8 +38,14 @@ main(){
     # alp, pt-query-digest で解析
     echo
     echo "<==== ACCESS LOG       ====>"
+    # ex) alp ltsv -m "/api/schedules/[0-9a-zA-Z]+" --sort avg -r
     sudo cat /var/log/nginx/access.log | alp ltsv -m "/api/schedules/[0-9a-zA-Z]+" --sort avg -r | tee alp_$(date +%Y%m%d-%H%M%S).txt
     sudo pt-query-digest /var/log/mysql/mysql-slow.log | tee digest_$(date +%Y%m%d-%H%M%S).txt
 }
 
-main | tee restart-and-bench.txt
+main | tee /tmp/score.txt
+
+# gitのコミットメッセージに結果を出力する
+cd ${HOME}/${APP_DIR}
+git commit --allow-empty --file='/tmp/score.txt'
+git push origin HEAD
