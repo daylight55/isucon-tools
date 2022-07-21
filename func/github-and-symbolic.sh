@@ -30,8 +30,3 @@ git config --global user.name "isucon"
 git config --global user.email "isucon@example.com"
 git init
 git remote add origin ${GIT_REMOTE_REPOSITORY}
-
-echo "<==== GIT COMMIT ${GIT_REMOTE_REPOSITORY}   ====>"
-git add .
-git commit -m "first commit"
-git push -u origin master
