@@ -2,12 +2,16 @@
 # ミドルウェア再起動、ログローテーション(trucate)、ベンチマーク実行、ログ解析(一番欲しい情報だけ標準出力する) 空コミット作ってプッシュまで一気にやる
 set -e
 
-TARGET_IP=$1
+TARGET_URL=$1
 APP_NAME=$2
 APP_DIR=$3
 
 main(){
-    cd ${HOME}/webapp
+    TARGET_URL=$1
+    APP_NAME=$2
+    APP_DIR=$3
+
+    cd ${APP_DIR}
 
     # checkout main
     git fetch origin
@@ -24,7 +28,7 @@ main(){
     echo
     echo "<==== RESTART SERVICES ====>"
     sudo systemctl restart mysql
-    sudo systemctl restart web-ruby
+    sudo systemctl restart ${APP_NAME}.ruby
     sudo systemctl restart nginx
 
     sleep 5
@@ -32,18 +36,23 @@ main(){
     # ベンチマークの実行
     echo
     echo "<==== BENCHMARK        ====>"
-    cd ${HOME}
-    ./bench/bench --target-url "${TARGET_IP}"
+    cd ${HOME}/${APP_DIR}/bench
+    ./bench --target-url "${TARGET_URL}"
 
     # alp, pt-query-digest で解析
     echo
     echo "<==== ACCESS LOG       ====>"
     # ex) alp ltsv -m "/api/schedules/[0-9a-zA-Z]+" --sort avg -r
-    sudo cat /var/log/nginx/access.log | alp ltsv -m "/api/schedules/[0-9a-zA-Z]+" --sort avg -r | tee alp_$(date +%Y%m%d-%H%M%S).txt
+    sudo cat /var/log/nginx/access.log | alp json -m "/api/estate/[0-9]+,/api/chair/[0-9]+,/api/estate/req_doc/[0-9]+,/api/recommended_estate/[0-9]+,/api/chair/buy/[0-9]+" --sort sum -r | tee alp_$(date +%Y%m%d-%H%M%S).txt
+
+    echo
+    echo "<==== SLOW QUERY LOG       ====>"
     sudo pt-query-digest /var/log/mysql/mysql-slow.log | tee digest_$(date +%Y%m%d-%H%M%S).txt
 }
 
-main | tee /tmp/score.txt
+main ${TARGET_URL} ${APP_NAME} ${APP_DIR} | tee /tmp/score.txt
+
+echo "APP_DIR: ${APP_DIR}"
 
 # gitのコミットメッセージに結果を出力する
 cd ${HOME}/${APP_DIR}

@@ -15,7 +15,7 @@ git reset --hard origin/master
 # ログローテーション
 echo "<==== LOG ROTATE       ====>"
 sudo mv /var/log/nginx/access.log /var/log/nginx/access.log.`date +%Y%m%d-%H%M%S`
-sudo rm /var/log/mysql/mysql-slow.log
+sudo rm -f /var/log/mysql/mysql-slow.log
 sudo nginx -s reopen
 sudo mysqladmin flush-logs
 
