@@ -13,7 +13,7 @@ git fetch origin
 git reset --hard origin/master
 
 # データベース初期化
-bash ./sql/init.sh
+# bash ./sql/init.sh
 
 # ログローテーション
 echo "<==== LOG ROTATE       ====>"
