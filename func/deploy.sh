@@ -12,6 +12,9 @@ cd ${APP_DIR}
 git fetch origin
 git reset --hard origin/master
 
+# データベース初期化
+bash /webapp/sql/init.sh
+
 # ログローテーション
 echo "<==== LOG ROTATE       ====>"
 sudo mv /var/log/nginx/access.log /var/log/nginx/access.log.`date +%Y%m%d-%H%M%S`
