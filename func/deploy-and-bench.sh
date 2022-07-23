@@ -43,7 +43,7 @@ main(){
     echo
     echo "<==== ACCESS LOG       ====>"
     # ex) alp ltsv -m "/api/schedules/[0-9a-zA-Z]+" --sort avg -r
-    sudo cat /var/log/nginx/access.log | alp json -m "/api/player/competition/[0-9a-zA-Z]+/ranking,/api/player/player/[0-9a-zA-Z]+,/api/organizer/competition/[0-9a-zA-Z]+/score,/api/organizer/competition/[0-9a-zA-Z]+/finish" --sort sum -r | tee alp_$(date +%Y%m%d-%H%M%S).txt
+    sudo cat /var/log/nginx/access.log | alp json -m "/api/player/competition/[0-9a-zA-Z]+/ranking,/api/player/player/[0-9a-zA-Z]+,/api/organizer/competition/[0-9a-zA-Z]+/score,/api/organizer/competition/[0-9a-zA-Z]+/finish,/api/organizer/player/[0-9a-zA-Z]+/disqualified,/js/app.[0-9a-zA-Z]+.js,/css/app.[0-9a-zA-Z]+.css" --sort sum -r | tee alp_$(date +%Y%m%d-%H%M%S).txt
 
     echo
     echo "<==== SLOW QUERY LOG       ====>"
