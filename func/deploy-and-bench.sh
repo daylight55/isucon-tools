@@ -7,37 +7,37 @@ APP_NAME=$2
 APP_DIR=$3
 
 main(){
-    TARGET_URL=$1
-    APP_NAME=$2
-    APP_DIR=$3
+    # TARGET_URL=$1
+    # APP_NAME=$2
+    # APP_DIR=$3
 
-    cd ${APP_DIR}
+    # cd ${APP_DIR}
 
-    # checkout main
-    git fetch origin
-    git reset --hard origin/master
+    # # checkout main
+    # git fetch origin
+    # git reset --hard origin/master
 
-    # ログローテーション
-    echo "<==== LOG ROTATE       ====>"
-    sudo mv /var/log/nginx/access.log /var/log/nginx/access.log.`date +%Y%m%d-%H%M%S`
-    sudo rm /var/log/mysql/mysql-slow.log
-    sudo nginx -s reopen
-    sudo mysqladmin flush-logs
+    # # ログローテーション
+    # echo "<==== LOG ROTATE       ====>"
+    # sudo mv /var/log/nginx/access.log /var/log/nginx/access.log.`date +%Y%m%d-%H%M%S`
+    # sudo rm /var/log/mysql/mysql-slow.log
+    # sudo nginx -s reopen
+    # sudo mysqladmin flush-logs
 
-    # 各種サービスの再起動
-    echo
-    echo "<==== RESTART SERVICES ====>"
-    sudo systemctl restart mysql
-    sudo systemctl restart ${APP_NAME}.ruby
-    sudo systemctl restart nginx
+    # # 各種サービスの再起動
+    # echo
+    # echo "<==== RESTART SERVICES ====>"
+    # sudo systemctl restart mysql
+    # sudo systemctl restart ${APP_NAME}
+    # sudo systemctl restart nginx
 
-    sleep 5
+    # sleep 5
 
     # ベンチマークの実行
-    echo
-    echo "<==== BENCHMARK        ====>"
-    cd ${HOME}/${APP_DIR}/bench
-    ./bench --target-url "${TARGET_URL}"
+    # echo
+    # echo "<==== BENCHMARK        ====>"
+    # cd ${HOME}/${APP_DIR}/bench
+    # ./bench --target-url "${TARGET_URL}"
 
     # alp, pt-query-digest で解析
     echo
@@ -50,7 +50,7 @@ main(){
     sudo pt-query-digest /var/log/mysql/mysql-slow.log | tee digest_$(date +%Y%m%d-%H%M%S).txt
 }
 
-main ${TARGET_URL} ${APP_NAME} ${APP_DIR} | tee /tmp/score.txt
+main | tee /tmp/score.txt
 
 echo "APP_DIR: ${APP_DIR}"
 

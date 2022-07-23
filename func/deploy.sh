@@ -23,5 +23,5 @@ sudo mysqladmin flush-logs
 echo
 echo "<==== RESTART SERVICES ====>"
 sudo systemctl restart mysql
-sudo systemctl restart ${APP_NAME}.ruby
+sudo systemctl restart ${APP_NAME}
 sudo systemctl restart nginx
