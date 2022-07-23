@@ -2,6 +2,7 @@
 set -xe
 
 mkdir tools && cd tools
+sudo apt install -y unzip
 
 # alp
 wget https://github.com/tkuchiki/alp/releases/download/v1.0.10/alp_linux_amd64.zip
