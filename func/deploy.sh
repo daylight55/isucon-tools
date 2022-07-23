@@ -22,6 +22,7 @@ sudo mysqladmin flush-logs
 # 各種サービスの再起動
 echo
 echo "<==== RESTART SERVICES ====>"
+sudo systemctl daemon-reload
 sudo systemctl restart mysql
 sudo systemctl restart ${APP_NAME}
 sudo systemctl restart nginx
