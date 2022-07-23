@@ -1,6 +1,6 @@
 # TODO:
 # ミドルウェア再起動、ログローテーション(trucate)、ベンチマーク実行、ログ解析(一番欲しい情報だけ標準出力する) 空コミット作ってプッシュまで一気にやる
-set -e
+# set -ex
 
 TARGET_URL=$1
 APP_NAME=$2
@@ -43,7 +43,7 @@ main(){
     echo
     echo "<==== ACCESS LOG       ====>"
     # ex) alp ltsv -m "/api/schedules/[0-9a-zA-Z]+" --sort avg -r
-    sudo cat /var/log/nginx/access.log | alp json -m "/api/estate/[0-9]+,/api/chair/[0-9]+,/api/estate/req_doc/[0-9]+,/api/recommended_estate/[0-9]+,/api/chair/buy/[0-9]+" --sort sum -r | tee alp_$(date +%Y%m%d-%H%M%S).txt
+    sudo cat /var/log/nginx/access.log | alp json -m "/api/player/competition/[0-9a-zA-Z]+/ranking,/api/player/player/[0-9a-zA-Z]+,/api/organizer/competition/[0-9a-zA-Z]+/score,/api/organizer/competition/[0-9a-zA-Z]+/finish" --sort sum -r | tee alp_$(date +%Y%m%d-%H%M%S).txt
 
     echo
     echo "<==== SLOW QUERY LOG       ====>"
@@ -51,8 +51,6 @@ main(){
 }
 
 main | tee /tmp/score.txt
-
-echo "APP_DIR: ${APP_DIR}"
 
 # gitのコミットメッセージに結果を出力する
 cd ${HOME}/${APP_DIR}
